@@ -1679,15 +1679,10 @@
       }
     }
 
-    // ===== REVEAL — força visível no DOMContentLoaded =====
-    document.addEventListener('DOMContentLoaded', () => {
-      // Torna todos os elementos visíveis imediatamente
-      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-      // Carrega tabela de reservas
-      renderTabelaReservas();
-      // Re-inicializa Supabase caso o SDK tenha carregado depois
-      if (!sb) initSupabase();
-    });
+    // ===== INICIALIZAÇÃO =====
+    // Script está no final do body — DOM já está carregado, chama direto
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    renderTabelaReservas();
   </script>
 </body>
 </html>
