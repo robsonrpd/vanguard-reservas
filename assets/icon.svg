@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B2447"/>
+      <stop offset="100%" stop-color="#19376D"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2E6BD6"/>
+      <stop offset="100%" stop-color="#4A90E2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo arredondado -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+
+  <!-- Borda sutil -->
+  <rect width="512" height="512" rx="96" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+
+  <!-- Linha decorativa superior -->
+  <rect x="60" y="60" width="392" height="3" rx="2" fill="url(#accent)" opacity="0.6"/>
+
+  <!-- Letras VS -->
+  <text
+    x="256"
+    y="318"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="220"
+    font-weight="900"
+    text-anchor="middle"
+    fill="white"
+    letter-spacing="-8"
+  >VS</text>
+
+  <!-- Linha azul brilhante abaixo das letras -->
+  <rect x="136" y="348" width="240" height="6" rx="3" fill="url(#accent)"/>
+
+  <!-- Texto pequeno abaixo -->
+  <text
+    x="256"
+    y="420"
+    font-family="Arial, sans-serif"
+    font-size="42"
+    font-weight="400"
+    text-anchor="middle"
+    fill="rgba(255,255,255,0.45)"
+    letter-spacing="10"
+  >SPORTS</text>
+
+  <!-- Linha decorativa inferior -->
+  <rect x="60" y="449" width="392" height="3" rx="2" fill="url(#accent)" opacity="0.6"/>
+</svg>

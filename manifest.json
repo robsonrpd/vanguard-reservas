@@ -1,0 +1,21 @@
+{
+  "name": "Vanguard Sports",
+  "short_name": "Vanguard",
+  "description": "Reserve sua quadra na Arena Vanguard Sports",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B2447",
+  "theme_color": "#0B2447",
+  "orientation": "portrait-primary",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["sports", "lifestyle"]
+}
