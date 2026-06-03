@@ -1035,44 +1035,53 @@
 
   <script>
     // ===== SUPABASE =====
-    const { createClient } = supabase;
-    const sb = createClient(
-      'https://gowghyjbejumipyrbgtg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvd2doeWpiZWp1bWlweXJiZ3RnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQ2MDgsImV4cCI6MjA5NjAyMDYwOH0.S8ImP9mKiC7_i7X3-Le8vKL7Ud2St7XGnWkd8G_SgZ0'
-    );
+    const SUPA_URL = 'https://gowghyjbejumipyrbgtg.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvd2doeWpiZWp1bWlweXJiZ3RnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQ2MDgsImV4cCI6MjA5NjAyMDYwOH0.S8ImP9mKiC7_i7X3-Le8vKL7Ud2St7XGnWkd8G_SgZ0';
+    let sb = null;
+
+    // Inicializa Supabase de forma segura (não quebra a página se CDN falhar)
+    function initSupabase() {
+      try {
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+          sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        } else {
+          console.warn('Supabase SDK não disponível — usando fallback localStorage.');
+        }
+      } catch(e) {
+        console.error('Erro ao inicializar Supabase:', e);
+      }
+    }
+    initSupabase();
 
     async function carregarReservas() {
+      if (!sb) {
+        try { return JSON.parse(localStorage.getItem('vh_reservas') || '[]'); }
+        catch { return []; }
+      }
       const { data, error } = await sb.from('reservas').select('*').order('data_key').order('horario_inicio');
-      if (error) { console.error('Erro ao carregar reservas:', error); return []; }
-      // Normaliza snake_case → camelCase
+      if (error) { console.error('Erro ao carregar:', error); return []; }
       return data.map(r => ({
-        id: r.id,
-        nome: r.nome,
-        casa: r.casa,
-        rua: r.rua,
-        whatsapp: r.whatsapp,
-        modalidade: r.modalidade,
-        dataKey: r.data_key,
-        dataFormatada: r.data_formatada,
-        horarioInicio: r.horario_inicio,
-        horarioFim: r.horario_fim,
-        obs: r.obs || '',
-        criadoEm: r.criado_em
+        id: r.id, nome: r.nome, casa: r.casa, rua: r.rua,
+        whatsapp: r.whatsapp, modalidade: r.modalidade,
+        dataKey: r.data_key, dataFormatada: r.data_formatada,
+        horarioInicio: r.horario_inicio, horarioFim: r.horario_fim,
+        obs: r.obs || '', criadoEm: r.criado_em
       }));
     }
 
     async function inserirReserva(r) {
+      if (!sb) {
+        // Fallback localStorage
+        const lista = JSON.parse(localStorage.getItem('vh_reservas') || '[]');
+        lista.push({ ...r, id: Date.now() });
+        localStorage.setItem('vh_reservas', JSON.stringify(lista));
+        return;
+      }
       const { error } = await sb.from('reservas').insert([{
-        nome: r.nome,
-        casa: r.casa,
-        rua: r.rua,
-        whatsapp: r.whatsapp,
-        modalidade: r.modalidade,
-        data_key: r.dataKey,
-        data_formatada: r.dataFormatada,
-        horario_inicio: r.horarioInicio,
-        horario_fim: r.horarioFim,
-        obs: r.obs || ''
+        nome: r.nome, casa: r.casa, rua: r.rua, whatsapp: r.whatsapp,
+        modalidade: r.modalidade, data_key: r.dataKey,
+        data_formatada: r.dataFormatada, horario_inicio: r.horarioInicio,
+        horario_fim: r.horarioFim, obs: r.obs || ''
       }]);
       if (error) throw error;
     }
@@ -1570,8 +1579,13 @@
 
     async function cancelarReserva(id) {
       if (!confirm('Confirmar cancelamento desta reserva?')) return;
-      const { error } = await sb.from('reservas').delete().eq('id', id);
-      if (error) { alert('Erro ao cancelar. Tente novamente.'); return; }
+      if (sb) {
+        const { error } = await sb.from('reservas').delete().eq('id', id);
+        if (error) { alert('Erro ao cancelar. Tente novamente.'); return; }
+      } else {
+        const lista = JSON.parse(localStorage.getItem('vh_reservas') || '[]').filter(r => r.id !== id);
+        localStorage.setItem('vh_reservas', JSON.stringify(lista));
+      }
       renderTabelaReservas();
     }
 
