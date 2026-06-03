@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1033,14 +1034,47 @@
   </div>
 
   <script>
-    // ===== DADOS PERSISTIDOS (localStorage) =====
-    function carregarReservas() {
-      try { return JSON.parse(localStorage.getItem('vh_reservas') || '[]'); }
-      catch { return []; }
+    // ===== SUPABASE =====
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://gowghyjbejumipyrbgtg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvd2doeWpiZWp1bWlweXJiZ3RnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQ2MDgsImV4cCI6MjA5NjAyMDYwOH0.S8ImP9mKiC7_i7X3-Le8vKL7Ud2St7XGnWkd8G_SgZ0'
+    );
+
+    async function carregarReservas() {
+      const { data, error } = await sb.from('reservas').select('*').order('data_key').order('horario_inicio');
+      if (error) { console.error('Erro ao carregar reservas:', error); return []; }
+      // Normaliza snake_case → camelCase
+      return data.map(r => ({
+        id: r.id,
+        nome: r.nome,
+        casa: r.casa,
+        rua: r.rua,
+        whatsapp: r.whatsapp,
+        modalidade: r.modalidade,
+        dataKey: r.data_key,
+        dataFormatada: r.data_formatada,
+        horarioInicio: r.horario_inicio,
+        horarioFim: r.horario_fim,
+        obs: r.obs || '',
+        criadoEm: r.criado_em
+      }));
     }
 
-    function salvarReservas(lista) {
-      localStorage.setItem('vh_reservas', JSON.stringify(lista));
+    async function inserirReserva(r) {
+      const { error } = await sb.from('reservas').insert([{
+        nome: r.nome,
+        casa: r.casa,
+        rua: r.rua,
+        whatsapp: r.whatsapp,
+        modalidade: r.modalidade,
+        data_key: r.dataKey,
+        data_formatada: r.dataFormatada,
+        horario_inicio: r.horarioInicio,
+        horario_fim: r.horarioFim,
+        obs: r.obs || ''
+      }]);
+      if (error) throw error;
     }
 
     // ===== ESTADO GLOBAL =====
@@ -1095,8 +1129,8 @@
     }
 
     // Retorna set de índices de horários bloqueados para uma data (quadra única — todas as modalidades)
-    function horariosOcupados(dataKey) {
-      const reservas = carregarReservas();
+    async function horariosOcupados(dataKey) {
+      const reservas = await carregarReservas();
       const ocupados = new Set();
       reservas.forEach(r => {
         if (r.dataKey !== dataKey) return;
@@ -1143,7 +1177,7 @@
     function fecharModal() {
       document.getElementById('modalOverlay').classList.remove('ativo');
       document.body.style.overflow = '';
-      renderTabelaReservas();
+      renderTabelaReservas(); // async — atualiza tabela em background
     }
 
     document.getElementById('modalOverlay').addEventListener('click', function(e) {
@@ -1164,12 +1198,12 @@
       });
     }
 
-    function renderEtapa(n) {
+    async function renderEtapa(n) {
       estado.etapa = n;
       atualizarProgresso(n);
       const conteudo = document.getElementById('stepContent');
       conteudo.innerHTML = '';
-      [null, renderEtapa1, renderEtapa2, renderEtapa3, renderEtapa4][n](conteudo);
+      await [null, renderEtapa1, renderEtapa2, renderEtapa3, renderEtapa4][n](conteudo);
       document.getElementById('modalBox').scrollTop = 0;
     }
 
@@ -1205,9 +1239,13 @@
     }
 
     // ===== ETAPA 2 =====
-    function renderEtapa2(el) {
+    async function renderEtapa2(el) {
       const dataLabel = estado.dataFormatada || '';
-      const ocupados = estado.dataKey ? horariosOcupados(estado.dataKey) : new Set();
+      // Loading enquanto busca horários ocupados
+      if (estado.dataKey) {
+        el.innerHTML = `<p style="color:var(--texto-muted);font-size:13px;padding:20px 0">Verificando disponibilidade...</p>`;
+      }
+      const ocupados = estado.dataKey ? await horariosOcupados(estado.dataKey) : new Set();
       const iniIdx   = HORARIOS.indexOf(estado.horarioInicio);
       const fimIdx   = HORARIOS.indexOf(estado.horarioFim);
       const podeAvancar = estado.data && estado.horarioInicio && estado.horarioFim;
@@ -1303,24 +1341,20 @@
     function clicarSlot(i) {
       const h = HORARIOS[i];
       if (!estado.horarioInicio) {
-        // Fase início
         estado.horarioInicio = h;
         estado.horarioFim = null;
       } else if (!estado.horarioFim) {
         if (i === HORARIOS.indexOf(estado.horarioInicio)) {
-          // Clicou no próprio início — reseta
           estado.horarioInicio = null;
           estado.horarioFim = null;
         } else {
-          // Fase fim
           estado.horarioFim = h;
         }
       } else {
-        // Já completo — qualquer clique reinicia a seleção
         estado.horarioInicio = h;
         estado.horarioFim = null;
       }
-      renderEtapa(2);
+      renderEtapa(2); // async — não precisa await aqui
     }
 
     function renderCalendarioHTML() {
@@ -1446,11 +1480,11 @@
         </div>`;
     }
 
-    function confirmarReserva() {
-      const nome    = document.getElementById('inputNome').value.trim();
-      const casa    = document.getElementById('inputCasa').value.trim();
-      const rua     = document.getElementById('inputRua').value;
-      const wpp     = document.getElementById('inputWpp').value.trim();
+    async function confirmarReserva() {
+      const nome = document.getElementById('inputNome').value.trim();
+      const casa = document.getElementById('inputCasa').value.trim();
+      const rua  = document.getElementById('inputRua').value;
+      const wpp  = document.getElementById('inputWpp').value.trim();
 
       if (!nome || !casa || !rua || !wpp) {
         let err = document.querySelector('.form-error');
@@ -1469,25 +1503,25 @@
       estado.rua = rua;
       estado.whatsapp = wpp;
 
-      // Salvar reserva
-      const reservas = carregarReservas();
-      reservas.push({
-        id: Date.now(),
-        nome: estado.nome,
-        casa: estado.casa,
-        rua: estado.rua,
-        whatsapp: estado.whatsapp,
-        modalidade: estado.modalidade,
-        dataKey: estado.dataKey,
-        dataFormatada: estado.dataFormatada,
-        horarioInicio: estado.horarioInicio,
-        horarioFim: estado.horarioFim,
-        obs: estado.obs,
-        criadoEm: new Date().toISOString()
-      });
-      salvarReservas(reservas);
+      // Desabilita botão durante o envio
+      const btn = document.querySelector('.btn-next');
+      if (btn) { btn.disabled = true; btn.textContent = 'Salvando...'; }
 
-      renderEtapa(4);
+      try {
+        await inserirReserva(estado);
+        renderEtapa(4);
+      } catch(e) {
+        console.error('Erro ao salvar reserva:', e);
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirmar Reserva'; }
+        let err = document.querySelector('.form-error');
+        if (!err) {
+          err = document.createElement('p');
+          err.className = 'form-error';
+          err.style.cssText = 'color:#ff7b7b;font-size:12px;margin-bottom:10px;';
+          document.querySelector('.nav-btns').before(err);
+        }
+        err.textContent = 'Erro ao salvar. Tente novamente.';
+      }
     }
 
     // ===== ETAPA 4 =====
@@ -1534,15 +1568,15 @@
       return new URLSearchParams(window.location.search).get('admin') === ADMIN_KEY;
     }
 
-    function cancelarReserva(id) {
+    async function cancelarReserva(id) {
       if (!confirm('Confirmar cancelamento desta reserva?')) return;
-      const lista = carregarReservas().filter(r => r.id !== id);
-      salvarReservas(lista);
+      const { error } = await sb.from('reservas').delete().eq('id', id);
+      if (error) { alert('Erro ao cancelar. Tente novamente.'); return; }
       renderTabelaReservas();
     }
 
     // ===== TABELA DE RESERVAS =====
-    function renderTabelaReservas() {
+    async function renderTabelaReservas() {
       const hoje = new Date();
       const anoAtual = hoje.getFullYear();
       const mesAtual = hoje.getMonth();
@@ -1550,8 +1584,14 @@
 
       document.getElementById('mesBadge').textContent = `${MESES_FULL[mesAtual]} ${anoAtual}`;
 
+      // Loading state na tabela
+      const tbody = document.getElementById('tbodyReservas');
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--texto-muted);font-size:13px">
+        Carregando reservas...
+      </td></tr>`;
+
       const admin = isAdmin();
-      const todas = carregarReservas();
+      const todas = await carregarReservas();
       const domes = todas.filter(r => r.dataKey && r.dataKey.startsWith(prefixo));
 
       domes.sort((a,b) => a.dataKey.localeCompare(b.dataKey) || a.horarioInicio.localeCompare(b.horarioInicio));
@@ -1634,12 +1674,12 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => observer.observe(el));
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
       reveals.forEach(el => {
         const r = el.getBoundingClientRect();
         if (r.top < window.innerHeight) el.classList.add('visible');
       });
-      renderTabelaReservas();
+      await renderTabelaReservas();
     });
   </script>
 </body>
