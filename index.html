@@ -748,26 +748,136 @@
     }
 
     /* ===== RESPONSIVO ===== */
+
+    /* --- Tablet --- */
     @media (max-width: 768px) {
-      .hero-aviso { bottom: 16px; }
 
-      .hero-content { padding-top: 90px; padding-bottom: 200px; }
+      /* Header */
+      header { padding: 0 4vw; height: 62px; }
+      .logo-text span:last-child { display: none; }
+      .btn-header { padding: 8px 16px; font-size: 10px; letter-spacing: 1.5px; }
 
-      .hero-title { font-size: clamp(54px, 14vw, 80px); }
+      /* Hero */
+      .hero-content {
+        padding-top: 80px;
+        padding-bottom: 240px;
+        padding-left: 5vw;
+        padding-right: 5vw;
+      }
+      .hero-title { font-size: clamp(52px, 13vw, 78px); }
+      .hero-sub { font-size: 14px; }
+      .btn-cta { padding: 14px 28px; font-size: 11px; }
 
-      .sport-cards { grid-template-columns: 1fr; gap: 10px; }
+      .hero-aviso {
+        bottom: 12px;
+        left: 4vw; right: 4vw;
+        padding: 12px 14px;
+        gap: 10px;
+      }
+      .aviso-icon { font-size: 18px; }
+      .aviso-titulo { font-size: 10px; }
+      .aviso-texto { font-size: 11px; }
 
-      .sport-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; text-align: left; }
-      .sport-icon { margin-bottom: 0; font-size: 28px; }
+      .scroll-indicator { display: none; }
 
-      .horario-row { grid-template-columns: 1fr; }
+      /* Seção reservas */
+      .section-reservas { padding: 48px 4vw; }
+      .section-title { font-size: 30px; }
+      .reservas-table-wrap { border-radius: 4px; }
+      .reservas-table { font-size: 12px; }
+      .reservas-table thead th { padding: 10px 10px; font-size: 9px; }
+      .reservas-table td { padding: 10px 10px; }
 
-      .times-grid { grid-template-columns: repeat(3, 1fr); }
+      /* Modal */
+      .modal-overlay { padding: 12px; align-items: flex-end; }
+      .modal-box {
+        padding: 28px 20px 20px;
+        border-radius: 12px 12px 8px 8px;
+        max-height: 94vh;
+      }
+      .btn-close { top: 14px; right: 14px; }
 
-      .modal-box { padding: 24px 18px; }
+      /* Progress */
+      .progress-wrap { margin-bottom: 24px; }
 
-      .nav-btns { flex-direction: column-reverse; }
-      .btn-back, .btn-next { width: 100%; justify-content: center; }
+      /* Step titles */
+      .step-title { font-size: 26px; }
+      .step-sub { font-size: 12px; margin-bottom: 18px; }
+
+      /* Etapa 1 — Sport cards */
+      .sport-cards { grid-template-columns: 1fr; gap: 8px; margin-bottom: 20px; }
+      .sport-card {
+        display: flex; align-items: center;
+        gap: 14px; padding: 16px 18px; text-align: left;
+        min-height: 64px;
+      }
+      .sport-icon { margin-bottom: 0; font-size: 26px; flex-shrink: 0; }
+      .sport-name { font-size: 15px; }
+
+      /* Etapa 2 — Calendário */
+      .calendar-inline { padding: 10px; }
+      .cal-header { margin-bottom: 8px; }
+      .cal-month-label { font-size: 15px; }
+      .cal-nav { width: 32px; height: 32px; }
+      .cal-dow { font-size: 8px; padding-bottom: 6px; }
+      .cal-day { font-size: 13px; padding: 8px 2px; }
+
+      /* Horário hint */
+      .horario-hint { font-size: 11px; margin-bottom: 12px; }
+
+      /* Resumo do horário */
+      .horario-resumo { padding: 8px 12px; font-size: 11px; }
+
+      /* Grade de horários — 3 colunas, células com toque fácil */
+      .times-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .time-slot { padding: 11px 4px; font-size: 12px; min-height: 42px; }
+
+      /* Etapa 3 — Formulário */
+      .form-group { margin-bottom: 12px; }
+      .form-label { font-size: 9px; }
+      /* Importante: 16px previne zoom no iOS */
+      .form-input, .form-select, .form-textarea { font-size: 16px; padding: 12px 14px; }
+
+      /* Botões de navegação */
+      .nav-btns { flex-direction: column-reverse; gap: 8px; margin-top: 16px; }
+      .btn-back, .btn-next {
+        width: 100%; justify-content: center;
+        padding: 14px 20px; font-size: 12px;
+        min-height: 48px;
+      }
+
+      /* Etapa 4 — Confirmação */
+      .confirm-title { font-size: 30px; }
+      .confirm-text { font-size: 13px; }
+      .confirm-summary { padding: 12px 14px; }
+      .confirm-row { font-size: 12px; padding: 6px 0; }
+      .confirm-row span:first-child { font-size: 9px; }
+    }
+
+    /* --- Mobile pequeno (< 420px) --- */
+    @media (max-width: 420px) {
+      .hero-title { font-size: clamp(44px, 13vw, 62px); }
+      .hero-sub { max-width: 100%; }
+
+      .modal-overlay { padding: 0; }
+      .modal-box {
+        border-radius: 16px 16px 0 0;
+        max-height: 96vh;
+        padding: 24px 16px 16px;
+      }
+
+      /* Calendário em telas muito pequenas */
+      .cal-day { font-size: 12px; padding: 7px 1px; }
+
+      /* 4 colunas de horários em telas menores */
+      .times-grid { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+      .time-slot { font-size: 11px; padding: 10px 2px; min-height: 38px; }
+
+      .section-title { font-size: 26px; }
+
+      /* Tabela — scroll horizontal */
+      .reservas-table thead th:nth-child(4),
+      .reservas-table td:nth-child(4) { display: none; } /* Oculta coluna "Data" — aparece no horário */
     }
   </style>
 </head>
