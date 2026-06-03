@@ -736,6 +736,31 @@
 
     .btn-next:disabled { opacity: 0.35; pointer-events: none; }
 
+    /* ===== NOTA CANCELAMENTO ===== */
+    .cancelamento-nota {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--texto-muted);
+      flex-wrap: wrap;
+    }
+
+    .cancelamento-nota a {
+      color: var(--azul-brilho);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .cancelamento-nota a:hover { color: var(--branco); }
+
     /* ===== FOOTER ===== */
     footer {
       text-align: center;
@@ -756,23 +781,26 @@
       header { padding: 0 4vw; height: 62px; }
       .logo-box { display: none; }
       .logo-text span:first-child { color: var(--azul-brilho); font-size: 15px; letter-spacing: 4px; }
+      /* "Sports" já está no span, apenas oculta o segundo span no mobile */
       .logo-text span:last-child { display: none; }
       .btn-header { padding: 8px 16px; font-size: 10px; letter-spacing: 1.5px; }
 
-      /* Hero */
+      /* Hero — aviso inline, logo abaixo do botão */
       .hero-content {
         padding-top: 80px;
-        padding-bottom: 100px;
+        padding-bottom: 24px;
         padding-left: 5vw;
         padding-right: 5vw;
       }
       .hero-title { font-size: clamp(52px, 13vw, 78px); }
       .hero-sub { font-size: 14px; }
-      .btn-cta { padding: 14px 28px; font-size: 11px; }
+      .btn-cta { padding: 14px 28px; font-size: 11px; margin-bottom: 0; }
 
+      /* No mobile o aviso vira elemento de fluxo, logo abaixo do botão */
       .hero-aviso {
-        bottom: 14px;
-        left: 4vw; right: 4vw;
+        position: relative;
+        bottom: auto; left: auto; right: auto;
+        margin: 16px 4vw 20px;
         padding: 12px 14px;
         gap: 10px;
       }
@@ -891,7 +919,7 @@
       <div class="logo-box">VH</div>
       <div class="logo-text">
         <span>Vanguard</span>
-        <span>Houses Sports</span>
+        <span>Sports</span>
       </div>
     </a>
     <button class="btn-primary btn-header" onclick="abrirModal()">Reservar &rarr;</button>
@@ -962,6 +990,15 @@
         </thead>
         <tbody id="tbodyReservas"></tbody>
       </table>
+    </div>
+
+    <!-- Nota de cancelamento -->
+    <div class="cancelamento-nota reveal" style="transition-delay:0.2s">
+      <span>🗓️</span>
+      <span>Precisa cancelar sua reserva?</span>
+      <a href="https://wa.me/SEUNUMERO?text=Ol%C3%A1%2C+preciso+cancelar+minha+reserva+da+quadra." target="_blank" rel="noopener">
+        Clique aqui e fale com o admin →
+      </a>
     </div>
   </section>
 
