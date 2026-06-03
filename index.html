@@ -1679,21 +1679,14 @@
       }
     }
 
-    // ===== REVEAL ON SCROLL =====
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
-
-    window.addEventListener('load', async () => {
-      reveals.forEach(el => {
-        const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight) el.classList.add('visible');
-      });
-      await renderTabelaReservas();
+    // ===== REVEAL — força visível no DOMContentLoaded =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // Torna todos os elementos visíveis imediatamente
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+      // Carrega tabela de reservas
+      renderTabelaReservas();
+      // Re-inicializa Supabase caso o SDK tenha carregado depois
+      if (!sb) initSupabase();
     });
   </script>
 </body>
