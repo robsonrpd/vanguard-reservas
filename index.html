@@ -762,7 +762,7 @@
       /* Hero */
       .hero-content {
         padding-top: 80px;
-        padding-bottom: 240px;
+        padding-bottom: 100px;
         padding-left: 5vw;
         padding-right: 5vw;
       }
@@ -771,7 +771,7 @@
       .btn-cta { padding: 14px 28px; font-size: 11px; }
 
       .hero-aviso {
-        bottom: 120px;
+        bottom: 14px;
         left: 4vw; right: 4vw;
         padding: 12px 14px;
         gap: 10px;
@@ -1490,6 +1490,20 @@
         </div>`;
     }
 
+    // ===== ADMIN =====
+    // Acesse /?admin=vanguard2024 para ativar o modo admin
+    const ADMIN_KEY = 'vanguard2024';
+    function isAdmin() {
+      return new URLSearchParams(window.location.search).get('admin') === ADMIN_KEY;
+    }
+
+    function cancelarReserva(id) {
+      if (!confirm('Confirmar cancelamento desta reserva?')) return;
+      const lista = carregarReservas().filter(r => r.id !== id);
+      salvarReservas(lista);
+      renderTabelaReservas();
+    }
+
     // ===== TABELA DE RESERVAS =====
     function renderTabelaReservas() {
       const hoje = new Date();
@@ -1499,20 +1513,34 @@
 
       document.getElementById('mesBadge').textContent = `${MESES_FULL[mesAtual]} ${anoAtual}`;
 
+      const admin = isAdmin();
       const todas = carregarReservas();
       const domes = todas.filter(r => r.dataKey && r.dataKey.startsWith(prefixo));
 
-      // Ordenar por data e horário
       domes.sort((a,b) => a.dataKey.localeCompare(b.dataKey) || a.horarioInicio.localeCompare(b.horarioInicio));
 
       const modalNome = { futevolei: 'Futevôlei', volei: 'Vôlei de Praia', beach: 'Beach Tennis' };
       const badgeCls  = { futevolei: 'badge-futevolei', volei: 'badge-volei', beach: 'badge-beach' };
 
+      // Atualiza cabeçalho dinamicamente
+      const thead = document.querySelector('#tabelaReservas thead tr');
+      thead.innerHTML = `
+        <th>Nome</th>
+        <th>Casa</th>
+        <th>Rua</th>
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Modalidade</th>
+        <th>Obs.</th>
+        ${admin ? '<th style="color:#ff7b7b">Cancelar</th>' : ''}
+      `;
+
       const tbody = document.getElementById('tbodyReservas');
 
       if (!domes.length) {
+        const cols = admin ? 8 : 7;
         tbody.innerHTML = `
-          <tr><td colspan="6" style="padding:0">
+          <tr><td colspan="${cols}" style="padding:0">
             <div class="empty-reservas">
               <div class="empty-icon">🏖️</div>
               <p>Nenhuma reserva registrada este mês. Seja o primeiro!</p>
@@ -1529,7 +1557,35 @@
           <td>${r.dataFormatada}</td>
           <td>${r.horarioInicio} – ${r.horarioFim}</td>
           <td><span class="badge-sport ${badgeCls[r.modalidade] || ''}">${modalNome[r.modalidade] || r.modalidade}</span></td>
+          <td style="color:rgba(255,255,255,0.5);font-size:12px;max-width:140px">${escHtml(r.obs || '—')}</td>
+          ${admin ? `
+          <td>
+            <button onclick="cancelarReserva(${r.id})" style="
+              background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.35);
+              border-radius:4px;color:#ff7b7b;padding:5px 10px;cursor:pointer;
+              font-size:11px;font-family:'DM Sans',sans-serif;letter-spacing:1px;
+              transition:background 0.2s;" onmouseover="this.style.background='rgba(255,80,80,0.3)'"
+              onmouseout="this.style.background='rgba(255,80,80,0.15)'">
+              Cancelar
+            </button>
+          </td>` : ''}
         </tr>`).join('');
+
+      // Banner admin visível
+      if (admin) {
+        let banner = document.getElementById('adminBanner');
+        if (!banner) {
+          banner = document.createElement('div');
+          banner.id = 'adminBanner';
+          banner.style.cssText = `
+            background:rgba(255,80,80,0.12);border:1px solid rgba(255,80,80,0.3);
+            border-radius:6px;padding:10px 16px;margin-bottom:20px;
+            font-size:12px;color:#ff9a9a;letter-spacing:1px;display:flex;
+            align-items:center;gap:8px;`;
+          banner.innerHTML = `<span>🔐</span> Modo administrador ativo — você pode cancelar reservas.`;
+          document.getElementById('secaoReservas').querySelector('.section-header').after(banner);
+        }
+      }
     }
 
     // ===== REVEAL ON SCROLL =====
