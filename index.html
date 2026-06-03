@@ -1626,8 +1626,6 @@
         ${admin ? '<th style="color:#ff7b7b">Cancelar</th>' : ''}
       `;
 
-      const tbody = document.getElementById('tbodyReservas');
-
       if (!domes.length) {
         const cols = admin ? 8 : 7;
         tbody.innerHTML = `
