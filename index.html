@@ -983,10 +983,27 @@
     <div class="section-header reveal">
       <div>
         <h2 class="section-title">Reservas <span>Efetuadas</span></h2>
-        <p class="section-sub">Quadra — mês atual</p>
+        <p class="section-sub" id="secaoSubtitulo">Quadra — mês atual</p>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <div class="mes-badge" id="mesBadge"></div>
+        <!-- Navegação de meses -->
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button onclick="navegarMes(-1)" title="Mês anterior" style="
+            background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+            border-radius:4px;color:var(--texto-muted);width:32px;height:32px;
+            display:flex;align-items:center;justify-content:center;cursor:pointer;
+            font-size:16px;transition:all 0.2s;flex-shrink:0;"
+            onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.35)'"
+            onmouseout="this.style.color='';this.style.borderColor=''">‹</button>
+          <div class="mes-badge" id="mesBadge"></div>
+          <button onclick="navegarMes(1)" id="btnProxMes" title="Próximo mês" style="
+            background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+            border-radius:4px;color:var(--texto-muted);width:32px;height:32px;
+            display:flex;align-items:center;justify-content:center;cursor:pointer;
+            font-size:16px;transition:all 0.2s;flex-shrink:0;"
+            onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.35)'"
+            onmouseout="this.style.color='';this.style.borderColor=''">›</button>
+        </div>
         <button onclick="atualizarReservas()" id="btnRefresh" title="Atualizar reservas" style="
           background:rgba(74,144,226,0.12);
           border:1px solid rgba(74,144,226,0.3);
@@ -1617,12 +1634,8 @@
 
     // ===== TABELA DE RESERVAS =====
     async function renderTabelaReservas() {
-      const hoje = new Date();
-      const anoAtual = hoje.getFullYear();
-      const mesAtual = hoje.getMonth();
-      const prefixo  = `${anoAtual}-${String(mesAtual+1).padStart(2,'0')}`;
-
-      document.getElementById('mesBadge').textContent = `${MESES_FULL[mesAtual]} ${anoAtual}`;
+      const prefixo = `${viewAno}-${String(viewMes+1).padStart(2,'0')}`;
+      document.getElementById('mesBadge').textContent = `${MESES_FULL[viewMes]} ${viewAno}`;
 
       // Loading state na tabela
       const tbody = document.getElementById('tbodyReservas');
@@ -1701,6 +1714,31 @@
           document.getElementById('secaoReservas').querySelector('.section-header').after(banner);
         }
       }
+    }
+
+    // ===== NAVEGAÇÃO DE MESES =====
+    const hoje = new Date();
+    let viewAno = hoje.getFullYear();
+    let viewMes = hoje.getMonth(); // 0-11
+
+    function navegarMes(delta) {
+      viewMes += delta;
+      if (viewMes < 0)  { viewMes = 11; viewAno--; }
+      if (viewMes > 11) { viewMes = 0;  viewAno++; }
+      // Desabilita botão "próximo" se já estiver no mês atual
+      const btnProx = document.getElementById('btnProxMes');
+      if (btnProx) {
+        const ehAtual = viewAno === hoje.getFullYear() && viewMes === hoje.getMonth();
+        btnProx.disabled = ehAtual;
+        btnProx.style.opacity = ehAtual ? '0.3' : '1';
+      }
+      // Atualiza subtítulo
+      const sub = document.getElementById('secaoSubtitulo');
+      if (sub) {
+        const ehAtual = viewAno === hoje.getFullYear() && viewMes === hoje.getMonth();
+        sub.textContent = ehAtual ? 'Quadra — mês atual' : 'Quadra — histórico';
+      }
+      renderTabelaReservas();
     }
 
     // ===== ATUALIZAR TABELA =====
