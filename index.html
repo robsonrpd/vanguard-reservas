@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vanguard Houses — Reserve sua Quadra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --azul-escuro:  #0B2447;
+      --azul-medio:   #19376D;
+      --azul-claro:   #2E6BD6;
+      --azul-brilho:  #4A90E2;
+      --branco:       #FFFFFF;
+      --branco-suave: #F0F4FA;
+      --cinza-borda:  rgba(255,255,255,0.12);
+      --texto-muted:  rgba(255,255,255,0.50);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--azul-escuro);
+      color: var(--branco);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 70px;
+      background: rgba(11,36,71,0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-box {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--branco);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-text span:first-child {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .logo-text span:last-child {
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--texto-muted);
+    }
+
+    .btn-primary {
+      background: var(--azul-claro);
+      color: var(--branco);
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+
+    .btn-primary:hover {
+      background: var(--azul-brilho);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(46,107,214,0.45);
+    }
+
+    .btn-header { padding: 9px 22px; }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.38) saturate(0.65);
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(11,36,71,0.78) 35%, rgba(25,55,109,0.55) 100%);
+      z-index: 1;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 5vw;
+      padding-top: 110px;
+      padding-bottom: 140px;
+      max-width: 820px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--azul-brilho);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 10vw, 130px);
+      line-height: 0.9;
+      color: var(--branco);
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--texto-muted);
+      max-width: 420px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .hero-sub strong {
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .btn-cta {
+      padding: 16px 40px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-cta svg { transition: transform 0.25s; }
+    .btn-cta:hover svg { transform: translateX(4px); }
+
+    /* ===== AVISO DE ZELORIA ===== */
+    .hero-aviso {
+      position: absolute;
+      bottom: 90px;
+      left: 5vw;
+      right: 5vw;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-left: 3px solid var(--azul-brilho);
+      border-radius: 6px;
+      padding: 16px 20px;
+      max-width: 700px;
+    }
+
+    .aviso-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .aviso-titulo {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--azul-brilho);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .aviso-texto {
+      font-size: 12px;
+      color: rgba(255,255,255,0.52);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ===== SCROLL LINE ===== */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 108px;
+      right: 5vw;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.3;
+    }
+
+    .scroll-indicator span {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, transparent, var(--branco));
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    /* ===== SEÇÃO RESERVAS ===== */
+    .section-reservas {
+      padding: 72px 5vw;
+      background: #071422;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 1px;
+      color: var(--branco);
+      line-height: 1;
+    }
+
+    .section-title span {
+      color: var(--azul-brilho);
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--texto-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .mes-badge {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--azul-brilho);
+      border: 1px solid rgba(74,144,226,0.35);
+      border-radius: 4px;
+      padding: 6px 14px;
+    }
+
+    .reservas-table-wrap {
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .reservas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .reservas-table thead th {
+      background: rgba(255,255,255,0.04);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--texto-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      white-space: nowrap;
+    }
+
+    .reservas-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.15s;
+    }
+
+    .reservas-table tbody tr:last-child { border-bottom: none; }
+    .reservas-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    .reservas-table td {
+      padding: 13px 16px;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .reservas-table td:first-child { color: var(--branco); font-weight: 500; }
+
+    .badge-sport {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .badge-futevolei { background: rgba(46,107,214,0.25); color: #7EB3FF; }
+    .badge-volei     { background: rgba(100,180,100,0.20); color: #8FD98F; }
+    .badge-beach     { background: rgba(220,160,50,0.22);  color: #F0C97A; }
+
+    .empty-reservas {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--texto-muted);
+    }
+
+    .empty-reservas .empty-icon { font-size: 36px; margin-bottom: 12px; }
+    .empty-reservas p { font-size: 13px; }
+
+    /* ===== ANIMAÇÕES ===== */
+    @keyframes slideUp {
+      from { opacity: 0; transform: scale(0.88) translateY(24px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes scrollLine {
+      0%   { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50%  { opacity: 1; transform: scaleY(1); }
+      100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    @keyframes checkDraw {
+      from { stroke-dashoffset: 50; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(7,18,36,0.93);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.ativo { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: var(--azul-escuro);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      width: 100%; max-width: 580px;
+      padding: 44px 48px;
+      position: relative;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .modal-box::-webkit-scrollbar { width: 3px; }
+    .modal-box::-webkit-scrollbar-track { background: transparent; }
+    .modal-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    .btn-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 4px;
+      color: var(--texto-muted);
+      cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-close:hover { background: rgba(255,255,255,0.12); color: var(--branco); }
+
+    /* Progress */
+    .progress-wrap { margin-bottom: 32px; }
+
+    .progress-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--texto-muted); margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .progress-track {
+      height: 3px; background: rgba(255,255,255,0.10);
+      border-radius: 2px; margin-bottom: 10px; position: relative;
+    }
+
+    .progress-fill {
+      height: 100%; background: var(--azul-claro);
+      border-radius: 2px; transition: width 0.4s ease;
+    }
+
+    .progress-dots { display: flex; gap: 6px; }
+
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); transition: background 0.3s;
+    }
+
+    .dot.ativo { background: var(--azul-claro); }
+    .dot.concluido { background: var(--azul-brilho); }
+
+    .step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; color: var(--branco);
+      margin-bottom: 6px; letter-spacing: 1px;
+    }
+
+    .step-sub {
+      font-size: 13px; color: var(--texto-muted);
+      margin-bottom: 24px; font-weight: 300;
+    }
+
+    /* ===== ETAPA 1 — Modalidades ===== */
+    .sport-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-bottom: 28px;
+    }
+
+    .sport-card {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 28px 16px;
+      text-align: center; cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sport-card:hover {
+      border-color: var(--azul-claro);
+      background: rgba(46,107,214,0.10);
+    }
+
+    .sport-card.selecionado {
+      border-color: var(--azul-brilho);
+      background: rgba(46,107,214,0.18);
+      box-shadow: 0 0 0 3px rgba(46,107,214,0.25);
+    }
+
+    .sport-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+
+    .sport-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px; letter-spacing: 1.5px;
+      color: var(--branco); line-height: 1.2;
+    }
+
+    /* ===== ETAPA 2 — Data e Horário ===== */
+    .calendar-input-wrap {
+      margin-bottom: 24px;
+    }
+
+    .calendar-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 8px; display: block;
+    }
+
+
+    .calendar-inline {
+      background: #0e2d58;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cal-month-label {
+      font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px;
+    }
+
+    .cal-nav {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 4px; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--texto-muted); font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .cal-nav:hover { background: rgba(255,255,255,0.12); color: var(--branco); }
+
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+
+    .cal-dow {
+      text-align: center; font-size: 9px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--texto-muted);
+      padding: 2px 0 6px;
+    }
+
+    .cal-day {
+      text-align: center; font-size: 13px;
+      padding: 6px 2px; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .cal-day:hover:not(.cal-vazio):not(.cal-passado) {
+      background: rgba(46,107,214,0.25); color: var(--branco);
+    }
+
+    .cal-day.cal-hoje { border: 1px solid rgba(74,144,226,0.4); color: var(--azul-brilho); }
+    .cal-day.cal-selecionado { background: var(--azul-claro); color: var(--branco); font-weight: 700; }
+    .cal-day.cal-passado { opacity: 0.22; cursor: not-allowed; }
+    .cal-day.cal-vazio { cursor: default; }
+
+    /* Horários */
+    .times-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    }
+
+    .time-slot {
+      padding: 8px 4px; font-size: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px; text-align: center; cursor: pointer;
+      transition: all 0.15s; color: var(--branco);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .time-slot:hover:not(.ocupado):not(.desabilitado) {
+      border-color: var(--azul-claro);
+      background: rgba(46,107,214,0.12);
+    }
+
+    .time-slot.ocupado {
+      opacity: 0.22; cursor: not-allowed; text-decoration: line-through;
+    }
+
+    .time-slot.inicio {
+      background: var(--azul-claro); border-color: var(--azul-claro);
+      color: var(--branco); font-weight: 700;
+    }
+
+    .time-slot.fim {
+      background: #1a5c9a; border-color: var(--azul-brilho);
+      color: var(--branco); font-weight: 700;
+    }
+
+    .time-slot.no-range {
+      background: rgba(46,107,214,0.12);
+      border-color: rgba(46,107,214,0.3);
+    }
+
+    .time-slot.desabilitado { opacity: 0.22; cursor: not-allowed; }
+
+    .horario-hint {
+      font-size: 11px; color: var(--texto-muted);
+      margin-bottom: 16px; font-style: italic;
+    }
+
+    .horario-resumo {
+      background: rgba(46,107,214,0.10);
+      border: 1px solid rgba(46,107,214,0.25);
+      border-radius: 4px; padding: 10px 14px;
+      font-size: 13px; margin-bottom: 20px;
+      display: none;
+    }
+
+    .horario-resumo.visivel { display: flex; align-items: center; gap: 8px; }
+    .horario-resumo svg { flex-shrink: 0; }
+
+    /* ===== ETAPA 3 — Dados ===== */
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block; font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 4px; padding: 13px 16px;
+      color: var(--branco); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; width: 100%;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--azul-claro); outline: none;
+      background: rgba(46,107,214,0.06);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(255,255,255,0.22);
+    }
+
+    .form-select option { background: var(--azul-escuro); color: var(--branco); }
+    .form-textarea { resize: vertical; min-height: 70px; }
+
+    .select-wrapper { position: relative; }
+    .select-wrapper::after {
+      content: '▾'; position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%); color: var(--texto-muted);
+      pointer-events: none; font-size: 12px;
+    }
+
+    /* ===== ETAPA 4 — Confirmação ===== */
+    .confirm-wrap { text-align: center; padding: 16px 0; }
+
+    .confirm-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(46,107,214,0.15);
+      border: 2px solid var(--azul-claro);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .confirm-icon svg {
+      stroke: var(--branco);
+      stroke-dasharray: 50; stroke-dashoffset: 50;
+      animation: checkDraw 0.5s ease 0.2s forwards;
+    }
+
+    .confirm-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+      color: var(--branco); letter-spacing: 1.5px; margin-bottom: 14px;
+    }
+
+    .confirm-text {
+      font-size: 14px; color: rgba(255,255,255,0.55);
+      line-height: 1.7; margin-bottom: 24px;
+    }
+
+    .confirm-summary {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 14px 18px; margin-bottom: 24px; text-align: left;
+    }
+
+    .confirm-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px;
+    }
+
+    .confirm-row:last-child { border-bottom: none; }
+
+    .confirm-row span:first-child {
+      color: var(--texto-muted); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    .confirm-row span:last-child { color: var(--branco); font-weight: 500; }
+
+    /* ===== BOTÕES DE NAVEGAÇÃO ===== */
+    .nav-btns { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+
+    .btn-back {
+      background: transparent; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px; color: var(--texto-muted);
+      padding: 12px 24px; font-family: 'DM Sans', sans-serif;
+      font-weight: 500; font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-back:hover { border-color: rgba(255,255,255,0.35); color: var(--branco); }
+
+    .btn-next {
+      padding: 12px 28px; font-size: 11px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .btn-next:disabled { opacity: 0.35; pointer-events: none; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 24px 5vw;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 1.5px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: #071422;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 768px) {
+      .hero-aviso { bottom: 16px; }
+
+      .hero-content { padding-top: 90px; padding-bottom: 200px; }
+
+      .hero-title { font-size: clamp(54px, 14vw, 80px); }
+
+      .sport-cards { grid-template-columns: 1fr; gap: 10px; }
+
+      .sport-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; text-align: left; }
+      .sport-icon { margin-bottom: 0; font-size: 28px; }
+
+      .horario-row { grid-template-columns: 1fr; }
+
+      .times-grid { grid-template-columns: repeat(3, 1fr); }
+
+      .modal-box { padding: 24px 18px; }
+
+      .nav-btns { flex-direction: column-reverse; }
+      .btn-back, .btn-next { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-box">VH</div>
+      <div class="logo-text">
+        <span>Vanguard</span>
+        <span>Houses Sports</span>
+      </div>
+    </a>
+    <button class="btn-primary btn-header" onclick="abrirModal()">Reservar &rarr;</button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <img src="quadra.png" alt="Arena Vanguard Houses" class="hero-img" />
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <p class="eyebrow reveal">Vanguard Houses</p>
+      <h1 class="hero-title reveal" style="transition-delay:0.1s">
+        Reserve<br>Sua Quadra<br>Agora
+      </h1>
+      <p class="hero-sub reveal" style="transition-delay:0.2s">
+        <strong>Futevôlei · Vôlei de Praia · Beach Tennis</strong>
+        Arena exclusiva para os moradores.
+      </p>
+      <button class="btn-primary btn-cta reveal" style="transition-delay:0.3s" onclick="abrirModal()">
+        Reservar Horário
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Aviso de Zeloria -->
+    <div class="hero-aviso reveal" style="transition-delay:0.45s">
+      <div class="aviso-icon">🤝</div>
+      <div>
+        <div class="aviso-titulo">Cuide do nosso espaço</div>
+        <div class="aviso-texto">
+          A arena é de todos nós. Mantenha a quadra limpa, guarde os equipamentos após o uso e respeite o horário reservado.
+          Juntos preservamos esse espaço para toda a comunidade Vanguard.
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </section>
+
+  <!-- ===== SEÇÃO RESERVAS ===== -->
+  <section class="section-reservas" id="secaoReservas">
+    <div class="section-header reveal">
+      <div>
+        <h2 class="section-title">Reservas <span>Efetuadas</span></h2>
+        <p class="section-sub">Quadra — mês atual</p>
+      </div>
+      <div class="mes-badge" id="mesBadge"></div>
+    </div>
+
+    <div class="reservas-table-wrap reveal" style="transition-delay:0.1s">
+      <table class="reservas-table" id="tabelaReservas">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Casa</th>
+            <th>Rua</th>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Modalidade</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyReservas"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    Vanguard Houses Sports &mdash; Arena exclusiva para moradores
+  </footer>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-box" id="modalBox">
+      <button class="btn-close" onclick="fecharModal()" aria-label="Fechar">&times;</button>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progressLabel">Passo 1 de 4</span>
+          <span id="progressPercent" style="color:var(--azul-brilho);font-weight:700"></span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:25%"></div>
+        </div>
+        <div class="progress-dots">
+          <div class="dot ativo" id="dot1"></div>
+          <div class="dot" id="dot2"></div>
+          <div class="dot" id="dot3"></div>
+          <div class="dot" id="dot4"></div>
+        </div>
+      </div>
+
+      <div id="stepContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DADOS PERSISTIDOS (localStorage) =====
+    function carregarReservas() {
+      try { return JSON.parse(localStorage.getItem('vh_reservas') || '[]'); }
+      catch { return []; }
+    }
+
+    function salvarReservas(lista) {
+      localStorage.setItem('vh_reservas', JSON.stringify(lista));
+    }
+
+    // ===== ESTADO GLOBAL =====
+    const estado = {
+      etapa: 1,
+      modalidade: null,
+      data: null,
+      dataKey: '',       // 'YYYY-MM-DD'
+      dataFormatada: '',
+      horarioInicio: null,
+      horarioFim: null,
+      nome: '',
+      casa: '',
+      rua: '',
+      whatsapp: '',
+      obs: ''
+    };
+
+    const DIAS_SEMANA = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+    const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const MESES_ABREV = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+    // 06h até 22h
+    const HORARIOS = [];
+    for (let h = 6; h <= 22; h++) HORARIOS.push(`${String(h).padStart(2,'0')}:00`);
+
+    const MODALIDADES = [
+      { id: 'futevolei', icon: '⚽', nome: 'Futevôlei' },
+      { id: 'volei',     icon: '🏐', nome: 'Vôlei de Praia' },
+      { id: 'beach',     icon: '🎾', nome: 'Beach Tennis' }
+    ];
+
+    // Estado do calendário
+    let calViewAno, calViewMes;
+    let calDropdownAberto = false;
+
+    // ===== HELPERS =====
+    function escHtml(str) {
+      return String(str || '')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;');
+    }
+
+    function dataKeyFromDate(d) {
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function formatarDataLabel(d) {
+      return `${DIAS_SEMANA[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} de ${MESES_ABREV[d.getMonth()]}`;
+    }
+
+    // Retorna set de índices de horários bloqueados para uma data (quadra única — todas as modalidades)
+    function horariosOcupados(dataKey) {
+      const reservas = carregarReservas();
+      const ocupados = new Set();
+      reservas.forEach(r => {
+        if (r.dataKey !== dataKey) return;
+        const iIni = HORARIOS.indexOf(r.horarioInicio);
+        const iFim = HORARIOS.indexOf(r.horarioFim);
+        for (let i = iIni; i < iFim; i++) ocupados.add(i);
+      });
+      return ocupados;
+    }
+
+    // Verifica se o slot i é válido como início (não ocupado e tem pelo menos 1h livre à frente)
+    function slotValidoInicio(i, ocupados) {
+      if (ocupados.has(i)) return false;
+      if (i + 1 > HORARIOS.length - 1) return false; // último slot, sem espaço à frente
+      return true;
+    }
+
+    // Verifica se o slot fim (índice j) é válido dado o início i e os ocupados
+    function slotValidoFim(iIni, j, ocupados) {
+      if (j <= iIni) return false; // mínimo 1h (j deve ser pelo menos iIni + 1)
+      for (let k = iIni + 1; k < j; k++) {
+        if (ocupados.has(k)) return false; // há ocupado no intervalo
+      }
+      if (ocupados.has(j)) return false; // o próprio slot fim está ocupado
+      return true;
+    }
+
+    // ===== ABRIR / FECHAR =====
+    function abrirModal() {
+      Object.assign(estado, {
+        etapa:1, modalidade:null, data:null, dataKey:'', dataFormatada:'',
+        horarioInicio:null, horarioFim:null,
+        nome:'', casa:'', rua:'', whatsapp:'', obs:''
+      });
+      const hoje = new Date();
+      calViewAno = hoje.getFullYear();
+      calViewMes = hoje.getMonth();
+      calDropdownAberto = false;
+      document.getElementById('modalOverlay').classList.add('ativo');
+      document.body.style.overflow = 'hidden';
+      renderEtapa(1);
+    }
+
+    function fecharModal() {
+      document.getElementById('modalOverlay').classList.remove('ativo');
+      document.body.style.overflow = '';
+      renderTabelaReservas();
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) fecharModal();
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+    // ===== PROGRESSO =====
+    function atualizarProgresso(etapa) {
+      const pct = Math.round((etapa / 4) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressLabel').textContent = `Passo ${etapa} de 4`;
+      document.getElementById('progressPercent').textContent = pct + '%';
+      [1,2,3,4].forEach(i => {
+        const dot = document.getElementById('dot'+i);
+        dot.className = 'dot' + (i < etapa ? ' concluido' : i === etapa ? ' ativo' : '');
+      });
+    }
+
+    function renderEtapa(n) {
+      estado.etapa = n;
+      atualizarProgresso(n);
+      const conteudo = document.getElementById('stepContent');
+      conteudo.innerHTML = '';
+      [null, renderEtapa1, renderEtapa2, renderEtapa3, renderEtapa4][n](conteudo);
+      document.getElementById('modalBox').scrollTop = 0;
+    }
+
+    // ===== ETAPA 1 =====
+    function renderEtapa1(el) {
+      el.innerHTML = `
+        <h2 class="step-title">Qual Esporte?</h2>
+        <p class="step-sub">Escolha a modalidade desejada.</p>
+        <div class="sport-cards">
+          ${MODALIDADES.map(m => `
+            <div class="sport-card${estado.modalidade === m.id ? ' selecionado' : ''}"
+                 onclick="selecionarModalidade('${m.id}')" role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter')selecionarModalidade('${m.id}')">
+              <span class="sport-icon">${m.icon}</span>
+              <div class="sport-name">${m.nome}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="nav-btns">
+          <button class="btn-primary btn-next" onclick="renderEtapa(2)"
+            ${!estado.modalidade ? 'disabled' : ''}>
+            Próximo
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+        </div>`;
+    }
+
+    function selecionarModalidade(id) {
+      estado.modalidade = id;
+      estado.horarioInicio = null;
+      estado.horarioFim = null;
+      renderEtapa(1);
+    }
+
+    // ===== ETAPA 2 =====
+    function renderEtapa2(el) {
+      const dataLabel = estado.dataFormatada || '';
+      const ocupados = estado.dataKey ? horariosOcupados(estado.dataKey) : new Set();
+      const iniIdx   = HORARIOS.indexOf(estado.horarioInicio);
+      const fimIdx   = HORARIOS.indexOf(estado.horarioFim);
+      const podeAvancar = estado.data && estado.horarioInicio && estado.horarioFim;
+
+      // Fase: 'inicio' se ainda não tem início, 'fim' se já tem início mas não fim
+      const fase = !estado.horarioInicio ? 'inicio' : (!estado.horarioFim ? 'fim' : 'concluido');
+
+      const hintTexto = {
+        inicio:    'Clique no horário de <strong style="color:var(--azul-brilho)">início</strong> da reserva <span style="color:var(--texto-muted)">(mínimo 1 hora)</span>',
+        fim:       `Início: <strong style="color:var(--azul-brilho)">${estado.horarioInicio}</strong> — agora clique no horário de <strong style="color:#7fbaff">término</strong>`,
+        concluido: ''
+      }[fase];
+
+      const slotsHTML = HORARIOS.map((h, i) => {
+        const oc = ocupados.has(i);
+        const isIni = i === iniIdx;
+        const isFim = i === fimIdx;
+        const inRange = iniIdx >= 0 && fimIdx >= 0 && i > iniIdx && i < fimIdx;
+
+        let cls = 'time-slot';
+        let onclick = '';
+
+        if (oc) {
+          cls += ' ocupado';
+        } else if (fase === 'inicio') {
+          if (slotValidoInicio(i, ocupados)) {
+            onclick = `clicarSlot(${i})`;
+          } else {
+            cls += ' desabilitado';
+          }
+        } else if (fase === 'fim') {
+          if (isIni) {
+            cls += ' inicio';
+            onclick = `clicarSlot(${i})`; // permite resetar início clicando nele
+          } else if (slotValidoFim(iniIdx, i, ocupados)) {
+            cls += isFim ? ' fim' : inRange ? ' no-range' : '';
+            onclick = `clicarSlot(${i})`;
+          } else {
+            cls += ' desabilitado';
+            if (isIni) cls = cls.replace(' desabilitado','');
+          }
+        } else {
+          // concluido — permite re-clicar para resetar
+          cls += isIni ? ' inicio' : isFim ? ' fim' : inRange ? ' no-range' : '';
+          onclick = `clicarSlot(${i})`;
+        }
+
+        return `<div class="${cls}" onclick="${onclick}">${h}</div>`;
+      }).join('');
+
+      el.innerHTML = `
+        <h2 class="step-title">Quando Você Joga?</h2>
+        <p class="step-sub">Escolha o dia e o período da reserva.</p>
+
+        <span class="calendar-label">Data</span>
+        ${estado.data ? `
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.05);border:1px solid var(--azul-claro);border-radius:4px;padding:12px 16px;margin-bottom:20px;">
+          <span style="font-size:14px;color:var(--branco)">${dataLabel}</span>
+          <button onclick="resetarData()" type="button" style="background:none;border:none;color:var(--azul-brilho);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;">Alterar</button>
+        </div>
+        ` : `
+        <div class="calendar-inline" id="calInline">
+          ${renderCalendarioHTML()}
+        </div>
+        `}
+
+        ${estado.data ? `
+        <div class="horario-resumo${(estado.horarioInicio && estado.horarioFim) ? ' visivel' : ''}" id="horarioResumo">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--azul-brilho)" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+          <span style="font-size:12px;color:rgba(255,255,255,0.75)">
+            Reserva: <strong style="color:var(--branco)">${estado.horarioInicio || ''}</strong> até <strong style="color:var(--branco)">${estado.horarioFim || ''}</strong>
+          </span>
+        </div>
+
+        <p class="horario-hint">${hintTexto}</p>
+
+        <div class="times-grid" style="margin-bottom:24px">
+          ${slotsHTML}
+        </div>
+        ` : `<p style="color:var(--texto-muted);font-size:13px;margin-bottom:24px">Selecione uma data para ver os horários disponíveis.</p>`}
+
+        <div class="nav-btns">
+          <button class="btn-back" onclick="renderEtapa(1)">← Voltar</button>
+          <button class="btn-primary btn-next" onclick="renderEtapa(3)"
+            ${!podeAvancar ? 'disabled' : ''}>
+            Próximo
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+        </div>`;
+    }
+
+    // Clique unificado na grade de horários
+    function clicarSlot(i) {
+      const h = HORARIOS[i];
+      if (!estado.horarioInicio) {
+        // Fase início
+        estado.horarioInicio = h;
+        estado.horarioFim = null;
+      } else if (!estado.horarioFim) {
+        if (i === HORARIOS.indexOf(estado.horarioInicio)) {
+          // Clicou no próprio início — reseta
+          estado.horarioInicio = null;
+          estado.horarioFim = null;
+        } else {
+          // Fase fim
+          estado.horarioFim = h;
+        }
+      } else {
+        // Já completo — qualquer clique reinicia a seleção
+        estado.horarioInicio = h;
+        estado.horarioFim = null;
+      }
+      renderEtapa(2);
+    }
+
+    function renderCalendarioHTML() {
+      const hoje = new Date();
+      hoje.setHours(0,0,0,0);
+      const primeiroDia = new Date(calViewAno, calViewMes, 1);
+      const ultimoDia   = new Date(calViewAno, calViewMes + 1, 0);
+      const offset = primeiroDia.getDay();
+
+      let cells = '';
+      // Cabeçalho dias da semana
+      ['D','S','T','Q','Q','S','S'].forEach(d => {
+        cells += `<div class="cal-dow">${d}</div>`;
+      });
+      // Células vazias antes
+      for (let i = 0; i < offset; i++) cells += `<div class="cal-day cal-vazio"></div>`;
+      // Dias
+      for (let d = 1; d <= ultimoDia.getDate(); d++) {
+        const dt = new Date(calViewAno, calViewMes, d);
+        dt.setHours(0,0,0,0);
+        const passado = dt < hoje;
+        const ehHoje  = dt.getTime() === hoje.getTime();
+        const ehSel   = estado.dataKey === dataKeyFromDate(dt);
+        let cls = 'cal-day';
+        if (passado) cls += ' cal-passado';
+        else if (ehSel) cls += ' cal-selecionado';
+        else if (ehHoje) cls += ' cal-hoje';
+        const ts = dt.getTime();
+        cells += `<div class="${cls}" onclick="${!passado ? `selecionarData(${ts})` : ''}">${d}</div>`;
+      }
+
+      return `
+        <div class="cal-header">
+          <button class="cal-nav" onclick="calMes(-1)" type="button">&#8249;</button>
+          <span class="cal-month-label">${MESES_FULL[calViewMes]} ${calViewAno}</span>
+          <button class="cal-nav" onclick="calMes(1)" type="button">&#8250;</button>
+        </div>
+        <div class="cal-grid">${cells}</div>`;
+    }
+
+    function resetarData() {
+      estado.data = null;
+      estado.dataKey = '';
+      estado.dataFormatada = '';
+      estado.horarioInicio = null;
+      estado.horarioFim = null;
+      renderEtapa(2);
+    }
+
+    function calMes(delta) {
+      calViewMes += delta;
+      if (calViewMes < 0) { calViewMes = 11; calViewAno--; }
+      if (calViewMes > 11) { calViewMes = 0; calViewAno++; }
+      const el = document.getElementById('calInline');
+      if (el) el.innerHTML = renderCalendarioHTML();
+    }
+
+    function selecionarData(ts) {
+      const d = new Date(ts);
+      estado.data = d;
+      estado.dataKey = dataKeyFromDate(d);
+      estado.dataFormatada = formatarDataLabel(d);
+      estado.horarioInicio = null;
+      estado.horarioFim = null;
+      calDropdownAberto = false;
+      renderEtapa(2);
+      // Sobe para mostrar os horários
+      setTimeout(() => {
+        const box = document.getElementById('modalBox');
+        if (box) box.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
+    }
+
+
+    // ===== ETAPA 3 =====
+    function renderEtapa3(el) {
+      el.innerHTML = `
+        <h2 class="step-title">Seus Dados</h2>
+        <p class="step-sub">Informe seus dados para registrar a reserva.</p>
+
+        <div class="form-group">
+          <label class="form-label" for="inputNome">Nome completo *</label>
+          <input class="form-input" id="inputNome" type="text" placeholder="Seu nome completo" required
+            value="${escHtml(estado.nome)}" oninput="estado.nome=this.value" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputCasa">Casa *</label>
+          <input class="form-input" id="inputCasa" type="text" placeholder="Ex: Casa 12"
+            value="${escHtml(estado.casa)}" oninput="estado.casa=this.value" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputRua">Rua *</label>
+          <div class="select-wrapper">
+            <select class="form-select" id="inputRua" onchange="estado.rua=this.value">
+              <option value="" ${!estado.rua?'selected':''}>Selecione a rua</option>
+              <option value="Rua 1" ${estado.rua==='Rua 1'?'selected':''}>Rua 1</option>
+              <option value="Rua 2" ${estado.rua==='Rua 2'?'selected':''}>Rua 2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputWpp">WhatsApp *</label>
+          <input class="form-input" id="inputWpp" type="tel" placeholder="(85) 9 0000-0000"
+            value="${escHtml(estado.whatsapp)}" oninput="estado.whatsapp=this.value" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputObs">Observações</label>
+          <textarea class="form-textarea" id="inputObs"
+            placeholder="Preferência de quadra ou outro detalhe..."
+            oninput="estado.obs=this.value">${escHtml(estado.obs)}</textarea>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn-back" onclick="renderEtapa(2)">← Voltar</button>
+          <button class="btn-primary btn-next" onclick="confirmarReserva()">
+            Confirmar Reserva
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+        </div>`;
+    }
+
+    function confirmarReserva() {
+      const nome    = document.getElementById('inputNome').value.trim();
+      const casa    = document.getElementById('inputCasa').value.trim();
+      const rua     = document.getElementById('inputRua').value;
+      const wpp     = document.getElementById('inputWpp').value.trim();
+
+      if (!nome || !casa || !rua || !wpp) {
+        let err = document.querySelector('.form-error');
+        if (!err) {
+          err = document.createElement('p');
+          err.className = 'form-error';
+          err.style.cssText = 'color:#ff7b7b;font-size:12px;letter-spacing:1px;margin-bottom:10px;';
+          document.querySelector('.nav-btns').before(err);
+        }
+        err.textContent = 'Preencha nome, casa, rua e WhatsApp.';
+        return;
+      }
+
+      estado.nome = nome;
+      estado.casa = casa;
+      estado.rua = rua;
+      estado.whatsapp = wpp;
+
+      // Salvar reserva
+      const reservas = carregarReservas();
+      reservas.push({
+        id: Date.now(),
+        nome: estado.nome,
+        casa: estado.casa,
+        rua: estado.rua,
+        whatsapp: estado.whatsapp,
+        modalidade: estado.modalidade,
+        dataKey: estado.dataKey,
+        dataFormatada: estado.dataFormatada,
+        horarioInicio: estado.horarioInicio,
+        horarioFim: estado.horarioFim,
+        obs: estado.obs,
+        criadoEm: new Date().toISOString()
+      });
+      salvarReservas(reservas);
+
+      renderEtapa(4);
+    }
+
+    // ===== ETAPA 4 =====
+    function renderEtapa4(el) {
+      const modalNome = { futevolei: 'Futevôlei', volei: 'Vôlei de Praia', beach: 'Beach Tennis' };
+      el.innerHTML = `
+        <div class="confirm-wrap">
+          <div class="confirm-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-dasharray="50" stroke-dashoffset="50"
+                 style="animation: checkDraw 0.5s ease 0.2s forwards">
+              <path d="M5 14l7 7L23 7"/>
+            </svg>
+          </div>
+          <h2 class="confirm-title">Reserva Registrada!</h2>
+          <p class="confirm-text">
+            ${escHtml(estado.nome)}, sua reserva para
+            <strong style="color:rgba(255,255,255,0.85)">${modalNome[estado.modalidade]}</strong>
+            no dia <strong style="color:rgba(255,255,255,0.85)">${estado.dataFormatada}</strong>
+            das <strong style="color:var(--azul-brilho)">${estado.horarioInicio}</strong>
+            às <strong style="color:var(--azul-brilho)">${estado.horarioFim}</strong> foi registrada com sucesso!
+          </p>
+
+          <div class="confirm-summary">
+            <div class="confirm-row"><span>Modalidade</span><span>${modalNome[estado.modalidade]}</span></div>
+            <div class="confirm-row"><span>Data</span><span>${estado.dataFormatada}</span></div>
+            <div class="confirm-row"><span>Horário</span><span>${estado.horarioInicio} – ${estado.horarioFim}</span></div>
+            <div class="confirm-row"><span>Casa</span><span>${escHtml(estado.casa)}</span></div>
+            <div class="confirm-row"><span>Rua</span><span>${escHtml(estado.rua)}</span></div>
+          </div>
+
+          <button class="btn-primary btn-next" style="width:100%;justify-content:center;padding:14px"
+            onclick="fecharModal()">
+            Ver todas as reservas
+          </button>
+        </div>`;
+    }
+
+    // ===== TABELA DE RESERVAS =====
+    function renderTabelaReservas() {
+      const hoje = new Date();
+      const anoAtual = hoje.getFullYear();
+      const mesAtual = hoje.getMonth();
+      const prefixo  = `${anoAtual}-${String(mesAtual+1).padStart(2,'0')}`;
+
+      document.getElementById('mesBadge').textContent = `${MESES_FULL[mesAtual]} ${anoAtual}`;
+
+      const todas = carregarReservas();
+      const domes = todas.filter(r => r.dataKey && r.dataKey.startsWith(prefixo));
+
+      // Ordenar por data e horário
+      domes.sort((a,b) => a.dataKey.localeCompare(b.dataKey) || a.horarioInicio.localeCompare(b.horarioInicio));
+
+      const modalNome = { futevolei: 'Futevôlei', volei: 'Vôlei de Praia', beach: 'Beach Tennis' };
+      const badgeCls  = { futevolei: 'badge-futevolei', volei: 'badge-volei', beach: 'badge-beach' };
+
+      const tbody = document.getElementById('tbodyReservas');
+
+      if (!domes.length) {
+        tbody.innerHTML = `
+          <tr><td colspan="6" style="padding:0">
+            <div class="empty-reservas">
+              <div class="empty-icon">🏖️</div>
+              <p>Nenhuma reserva registrada este mês. Seja o primeiro!</p>
+            </div>
+          </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = domes.map(r => `
+        <tr>
+          <td>${escHtml(r.nome)}</td>
+          <td>${escHtml(r.casa)}</td>
+          <td>${escHtml(r.rua)}</td>
+          <td>${r.dataFormatada}</td>
+          <td>${r.horarioInicio} – ${r.horarioFim}</td>
+          <td><span class="badge-sport ${badgeCls[r.modalidade] || ''}">${modalNome[r.modalidade] || r.modalidade}</span></td>
+        </tr>`).join('');
+    }
+
+    // ===== REVEAL ON SCROLL =====
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    window.addEventListener('load', () => {
+      reveals.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight) el.classList.add('visible');
+      });
+      renderTabelaReservas();
+    });
+  </script>
+</body>
+</html>
