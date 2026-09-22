@@ -1118,6 +1118,7 @@
         const lista = JSON.parse(localStorage.getItem('vh_reservas') || '[]');
         lista.push({ ...r, id: Date.now() });
         localStorage.setItem('vh_reservas', JSON.stringify(lista));
+        enviarNotificacaoPush(r);
         return;
       }
       const { error } = await sb.from('reservas').insert([{
@@ -1127,6 +1128,23 @@
         horario_fim: r.horarioFim, obs: r.obs || ''
       }]);
       if (error) throw error;
+      enviarNotificacaoPush(r);
+    }
+
+    async function enviarNotificacaoPush(r) {
+      const modalNome = { futevolei: 'Futevôlei', volei: 'Vôlei de Praia', beach: 'Beach Tennis' };
+      const esporte = modalNome[r.modalidade] || r.modalidade;
+      try {
+        await fetch('https://ntfy.sh/vanguard-sports-quadra-4829', {
+          method: 'POST',
+          body: `${r.nome} — ${esporte}\n📅 ${r.dataFormatada} · ${r.horarioInicio}–${r.horarioFim}\n🏠 Casa ${r.casa}, ${r.rua}`,
+          headers: {
+            'Title': '🏐 Nova reserva — Vanguard Sports',
+            'Priority': 'high',
+            'Tags': 'sports,calendar'
+          }
+        });
+      } catch(e) { /* falha silenciosa — não bloqueia a reserva */ }
     }
 
     // ===== ESTADO GLOBAL =====
