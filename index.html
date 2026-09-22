@@ -1135,16 +1135,19 @@
       const modalNome = { futevolei: 'Futevôlei', volei: 'Vôlei de Praia', beach: 'Beach Tennis' };
       const esporte = modalNome[r.modalidade] || r.modalidade;
       try {
-        await fetch('https://ntfy.sh/vanguard-sports-quadra-4829', {
+        const resp = await fetch('https://ntfy.sh/vanguard-sports-quadra-4829', {
           method: 'POST',
-          body: `${r.nome} — ${esporte}\n📅 ${r.dataFormatada} · ${r.horarioInicio}–${r.horarioFim}\n🏠 Casa ${r.casa}, ${r.rua}`,
+          body: `${r.nome} — ${esporte}\n${r.dataFormatada} · ${r.horarioInicio}–${r.horarioFim}\nCasa ${r.casa}, ${r.rua}`,
           headers: {
-            'Title': '🏐 Nova reserva — Vanguard Sports',
+            'Title': 'Nova reserva — Vanguard Sports',
             'Priority': 'high',
             'Tags': 'sports,calendar'
           }
         });
-      } catch(e) { /* falha silenciosa — não bloqueia a reserva */ }
+        console.log('[ntfy] status:', resp.status, resp.ok ? 'OK' : 'ERRO');
+      } catch(e) {
+        console.error('[ntfy] falha ao enviar:', e);
+      }
     }
 
     // ===== ESTADO GLOBAL =====
