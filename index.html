@@ -1137,9 +1137,9 @@
       try {
         const resp = await fetch('https://ntfy.sh/vanguard-sports-quadra-4829', {
           method: 'POST',
-          body: `${r.nome} — ${esporte}\n${r.dataFormatada} · ${r.horarioInicio}–${r.horarioFim}\nCasa ${r.casa}, ${r.rua}`,
+          body: `${r.nome} - ${esporte}\n${r.dataFormatada} - ${r.horarioInicio} as ${r.horarioFim}\nCasa ${r.casa}, ${r.rua}`,
           headers: {
-            'Title': 'Nova reserva — Vanguard Sports',
+            'Title': 'Nova reserva - Vanguard Sports',
             'Priority': 'high',
             'Tags': 'sports,calendar'
           }
