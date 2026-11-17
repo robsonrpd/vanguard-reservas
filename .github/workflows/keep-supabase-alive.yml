@@ -1,0 +1,20 @@
+name: Manter Supabase ativo
+
+on:
+  schedule:
+    - cron: '0 12 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar tabela de reservas
+        env:
+          SUPA_URL: https://gowghyjbejumipyrbgtg.supabase.co
+          # Chave anon pública (a mesma já exposta no index.html)
+          SUPA_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvd2doeWpiZWp1bWlweXJiZ3RnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQ2MDgsImV4cCI6MjA5NjAyMDYwOH0.S8ImP9mKiC7_i7X3-Le8vKL7Ud2St7XGnWkd8G_SgZ0
+        run: |
+          curl -fsS "$SUPA_URL/rest/v1/reservas?select=id&limit=1" \
+            -H "apikey: $SUPA_KEY" \
+            -H "Authorization: Bearer $SUPA_KEY"
